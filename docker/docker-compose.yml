@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: tkp
+    restart: always
+    environment:
+      POSTGRES_USER: tkp
+      POSTGRES_PASSWORD: Abcd1234
+      POSTGRES_DB: tkp
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
