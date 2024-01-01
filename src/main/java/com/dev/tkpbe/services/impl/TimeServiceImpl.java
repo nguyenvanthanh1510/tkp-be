@@ -11,6 +11,7 @@ import com.dev.tkpbe.services.TimeService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -48,8 +52,15 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public Time create(Time time){
+
+
         if (time == null) {
             throw new DsdCommonException(DsdConstant.ERROR.USER.EXIST);
+        }
+        Date currentTime = new Date();
+        String selectTime = time.getTime().toString();
+        if(selectTime == null) {
+            time.setTime(currentTime);
         }
         return Optional.of(time)
                 .map(timeMapper::toEntity)
