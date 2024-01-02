@@ -113,4 +113,42 @@ public class TimeController {
                         .data(HttpStatus.OK.toString())
                         .build());
     }
+
+    @PostMapping("/check-in")
+    public ResponseEntity<BaseOutput<Time>> checkIn( Time time){
+        if(time == null){
+            BaseOutput<Time> response =
+                    BaseOutput.<Time>builder()
+                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+                            .build();
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        Time createTime = timeService.checkIn(time);
+        BaseOutput<Time> response =
+                BaseOutput.<Time>builder()
+                        .message(HttpStatus.OK.toString())
+                        .data(createTime)
+                        .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/check-out")
+    public ResponseEntity<BaseOutput<Time>> checkOut( Time time){
+        if(time == null){
+            BaseOutput<Time> response =
+                    BaseOutput.<Time>builder()
+                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+                            .build();
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        Time createTime = timeService.checkOut(time);
+        BaseOutput<Time> response =
+                BaseOutput.<Time>builder()
+                        .message(HttpStatus.OK.toString())
+                        .data(createTime)
+                        .build();
+        return ResponseEntity.ok(response);
+    }
 }

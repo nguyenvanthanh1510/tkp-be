@@ -13,4 +13,7 @@ public interface TimeService {
     Time create(Time time);
     Time update(Time time);
     void delete( Long id);
+    Time checkIn(Time time);
+
+    Time checkOut(Time time);
 }

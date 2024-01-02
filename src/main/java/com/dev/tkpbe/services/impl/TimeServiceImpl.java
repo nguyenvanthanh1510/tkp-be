@@ -1,13 +1,17 @@
 package com.dev.tkpbe.services.impl;
 
 import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.enums.Status;
+import com.dev.tkpbe.commons.enums.TimeType;
 import com.dev.tkpbe.components.TimeMapper;
 import com.dev.tkpbe.configs.exceptions.DsdCommonException;
 import com.dev.tkpbe.models.dtos.Time;
 import com.dev.tkpbe.models.dtos.User;
 import com.dev.tkpbe.models.entities.TimeEntity;
 import com.dev.tkpbe.repositories.TimeRepository;
+import com.dev.tkpbe.repositories.UserRepository;
 import com.dev.tkpbe.services.TimeService;
+import com.dev.tkpbe.services.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
@@ -33,6 +38,8 @@ public class TimeServiceImpl implements TimeService {
 
     @Lazy private final TimeRepository timeRepository;
     @Lazy private final TimeMapper timeMapper;
+    @Lazy private final UserService userService;
+    @Lazy private final UserRepository userRepository;
 
     @Override
     public Page<Time> getByPaging(
@@ -52,8 +59,6 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public Time create(Time time){
-
-
         if (time == null) {
             throw new DsdCommonException(DsdConstant.ERROR.USER.EXIST);
         }
@@ -62,8 +67,10 @@ public class TimeServiceImpl implements TimeService {
         if(selectTime == null) {
             time.setTime(currentTime);
         }
-        return Optional.of(time)
-                .map(timeMapper::toEntity)
+        TimeEntity timeEntity=timeMapper.toEntity(time);
+        String userEmail=userService.getAuthenticatedUserEmail();
+        userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
+        return Optional.of(timeEntity)
                 .map(timeRepository::save)
                 .map(timeMapper::toDTO)
                 .orElse(null);
@@ -87,4 +94,51 @@ public class TimeServiceImpl implements TimeService {
         }
         timeRepository.deleteById(id);
     }
+
+    @Override
+    public Time checkIn(Time time){
+        TimeEntity timeEntity=timeMapper.toEntity(time);
+        String userEmail=userService.getAuthenticatedUserEmail();
+        userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
+
+        Date now =new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (hour <= 9) {
+            timeEntity.setStatus(Status.TIMELY);
+        } else {
+            timeEntity.setStatus(Status.LATE);
+        }
+        return Optional.of(timeEntity)
+                .map(t -> t.setType(TimeType.CHECK_IN))
+                .map(t -> t.setTime(now))
+                .map(timeRepository::save)
+                .map(timeMapper::toDTO)
+                .orElse(null);
+    }
+
+    @Override
+    public Time checkOut(Time time){
+        TimeEntity timeEntity=timeMapper.toEntity(time);
+        String userEmail=userService.getAuthenticatedUserEmail();
+        userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
+        Date now =new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (hour >= 18) {
+            timeEntity.setStatus(Status.TIMELY);
+        } else {
+            timeEntity.setStatus(Status.EARLY);
+        }
+        return Optional.of(timeEntity)
+                .map(t -> t.setType(TimeType.CHECK_OUT))
+                .map(t -> t.setTime(now))
+                .map(timeRepository::save)
+                .map(timeMapper::toDTO)
+                .orElse(null);
+
+    }
+
 }
