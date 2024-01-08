@@ -1,5 +1,6 @@
 package com.dev.tkpbe.models.dtos;
 
+import com.dev.tkpbe.commons.enums.Status;
 import com.dev.tkpbe.commons.enums.TimeType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -12,6 +13,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder(toBuilder = true)
@@ -25,5 +27,9 @@ public class Time {
     TimeType type;
 
     Date time;
+
+    Status status;
+
+    User user;
 
 }

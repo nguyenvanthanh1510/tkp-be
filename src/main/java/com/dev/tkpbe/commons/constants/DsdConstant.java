@@ -36,6 +36,12 @@ public class DsdConstant {
       public static final String EXIST = "error.role.exist";
     }
 
+    public static class TIME {
+      public static final String NOT_CHECK_IN = "error.time.not.checkin";
+      public static final String CHECK_IN = "error.time.exist.checkin";
+      public static final String CHECK_OUT = "error.time.exist.checkout";
+    }
+
     public static class SERVER {
       public static final String INTERNAL = "error.server.internal";
     }

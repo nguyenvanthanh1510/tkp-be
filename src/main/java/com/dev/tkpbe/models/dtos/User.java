@@ -12,6 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder(toBuilder = true)
@@ -37,4 +38,5 @@ public class User {
 
   List<Role> roles;
 
+  List<Time> times;
 }

@@ -1,5 +1,6 @@
 package com.dev.tkpbe.models.entities;
 
+import com.dev.tkpbe.commons.enums.Status;
 import com.dev.tkpbe.commons.enums.TimeType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "time")
 public class TimeEntity extends CommonEntity implements Serializable {
@@ -26,10 +28,18 @@ public class TimeEntity extends CommonEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = -7894854835496777855L;
 
-    @Column(name = "type", unique = true)
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     TimeType type;
 
     @Column(name = "time")
     Date time;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    UserEntity user;
 }
