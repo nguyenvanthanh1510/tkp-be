@@ -37,10 +37,9 @@ public class DsdConstant {
     }
 
     public static class TIME {
-      public static final String NOT_CHECK_IN = "error.role.not.checkin";
-      public static final String CHECK_IN = "error.role.exist.checkin";
-      public static final String CHECK_OUT = "error.role.exist.checkout";
-      public static final String EXIST = "error.role.exist";
+      public static final String NOT_CHECK_IN = "error.time.not.checkin";
+      public static final String CHECK_IN = "error.time.exist.checkin";
+      public static final String CHECK_OUT = "error.time.exist.checkout";
     }
 
     public static class SERVER {

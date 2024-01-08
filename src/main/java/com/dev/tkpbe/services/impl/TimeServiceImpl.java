@@ -8,6 +8,7 @@ import com.dev.tkpbe.configs.exceptions.DsdCommonException;
 import com.dev.tkpbe.models.dtos.Time;
 import com.dev.tkpbe.models.dtos.User;
 import com.dev.tkpbe.models.entities.TimeEntity;
+import com.dev.tkpbe.models.entities.UserEntity;
 import com.dev.tkpbe.repositories.TimeRepository;
 import com.dev.tkpbe.repositories.UserRepository;
 import com.dev.tkpbe.services.TimeService;
@@ -98,10 +99,17 @@ public class TimeServiceImpl implements TimeService {
     @Override
     public Time checkIn(Time time){
         TimeEntity timeEntity=timeMapper.toEntity(time);
-        String userEmail=userService.getAuthenticatedUserEmail();
-        userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
-
         Date now =new Date();
+        String userEmail=userService.getAuthenticatedUserEmail();
+        UserEntity user=userRepository.findByEmail(userEmail).orElse(null);
+        Date startOfDay = getStartOfDay(now);
+        Date endOfDay = getEndOfDay(now);
+        boolean hasCheckedInToday = timeRepository.existsByUserAndTypeAndTimeBetween(user, TimeType.CHECK_IN, startOfDay, endOfDay);
+
+        if (hasCheckedInToday) {
+            throw new DsdCommonException(DsdConstant.ERROR.TIME.CHECK_IN);
+        }
+        userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -122,8 +130,23 @@ public class TimeServiceImpl implements TimeService {
     public Time checkOut(Time time){
         TimeEntity timeEntity=timeMapper.toEntity(time);
         String userEmail=userService.getAuthenticatedUserEmail();
-        userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
+        UserEntity user=userRepository.findByEmail(userEmail).orElse(null);
         Date now =new Date();
+        Date startOfDay = getStartOfDay(now);
+        Date endOfDay = getEndOfDay(now);
+
+        boolean hasCheckedInToday = timeRepository.existsByUserAndTypeAndTimeBetween(user, TimeType.CHECK_IN, startOfDay, endOfDay);
+
+        if (!hasCheckedInToday) {
+            throw new DsdCommonException(DsdConstant.ERROR.TIME.NOT_CHECK_IN);
+        }
+
+        boolean hasCheckedOutToday = timeRepository.existsByUserAndTypeAndTimeBetween(user, TimeType.CHECK_OUT, startOfDay, endOfDay);
+
+        if (hasCheckedOutToday) {
+            throw new DsdCommonException(DsdConstant.ERROR.TIME.CHECK_OUT);
+        }
+        userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -139,6 +162,26 @@ public class TimeServiceImpl implements TimeService {
                 .map(timeMapper::toDTO)
                 .orElse(null);
 
+    }
+
+    private Date getStartOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    private Date getEndOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime();
     }
 
 }
