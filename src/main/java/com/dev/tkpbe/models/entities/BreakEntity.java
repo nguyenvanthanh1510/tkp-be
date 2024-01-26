@@ -1,12 +1,11 @@
 package com.dev.tkpbe.models.entities;
 
+import com.dev.tkpbe.commons.enums.BreakStatus;
 import com.dev.tkpbe.commons.enums.BreakType;
+import com.dev.tkpbe.commons.enums.TimeStatus;
 import com.dev.tkpbe.commons.enums.TimeType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -22,23 +21,30 @@ import java.util.Date;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "break")
 public class BreakEntity extends CommonEntity implements Serializable {
     @Lazy
     @Serial
-
     private static final long serialVersionUID = -7894854835496777855L;
 
-    @Column(name = "day", unique = true)
+    @Column(name = "day")
     Date day;
 
-    @Column(name = "breaktype", unique = true)
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    BreakType breaktype;
+    BreakType type;
 
     @Column(name = "content")
     String content;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    BreakStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    UserEntity user;
 
 }

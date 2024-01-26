@@ -1,14 +1,11 @@
 package com.dev.tkpbe.controllers;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.models.dtos.Time;
-import com.dev.tkpbe.models.dtos.User;
 import com.dev.tkpbe.models.responses.BaseOutput;
 import com.dev.tkpbe.services.TimeService;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +44,7 @@ public class TimeController {
         if (id == null) {
             BaseOutput<Time> response =
                     BaseOutput.<Time>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
                             .build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -66,7 +63,7 @@ public class TimeController {
         if(time == null){
             BaseOutput<Time> response =
             BaseOutput.<Time>builder()
-                    .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+                    .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_BODY))
                     .build();
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -84,7 +81,7 @@ public class TimeController {
         if(id == null){
             BaseOutput<Time> response =
                     BaseOutput.<Time>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
                             .build();
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -103,7 +100,7 @@ public class TimeController {
         if (id <= 0) {
             BaseOutput<String> response =
                     BaseOutput.<String>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
                             .build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -119,7 +116,7 @@ public class TimeController {
         if(time == null){
             BaseOutput<Time> response =
                     BaseOutput.<Time>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_BODY))
                             .build();
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -138,7 +135,7 @@ public class TimeController {
         if(time == null){
             BaseOutput<Time> response =
                     BaseOutput.<Time>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_BODY))
                             .build();
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }

@@ -1,11 +1,10 @@
 package com.dev.tkpbe.controllers;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.models.dtos.User;
 import com.dev.tkpbe.models.responses.BaseOutput;
 import com.dev.tkpbe.services.UserService;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +48,7 @@ public class UserController {
     if (id == null) {
       BaseOutput<User> response =
           BaseOutput.<User>builder()
-              .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+              .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -68,7 +67,7 @@ public class UserController {
     if (StringUtils.isAllBlank(email)) {
       BaseOutput<User> response =
           BaseOutput.<User>builder()
-              .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+              .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -88,7 +87,7 @@ public class UserController {
     if (user == null) {
       BaseOutput<User> response =
           BaseOutput.<User>builder()
-                  .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+                  .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_BODY))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -109,7 +108,7 @@ public class UserController {
     if (id == null) {
       BaseOutput<User> response =
           BaseOutput.<User>builder()
-                  .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                  .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -129,7 +128,7 @@ public class UserController {
     if (id <= 0) {
       BaseOutput<String> response =
           BaseOutput.<String>builder()
-                  .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                  .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }

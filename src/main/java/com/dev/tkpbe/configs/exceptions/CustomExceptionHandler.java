@@ -4,7 +4,7 @@ package com.dev.tkpbe.configs.exceptions;
 import java.rmi.ServerException;
 import java.util.List;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.commons.enums.ResponseStatus;
 import com.dev.tkpbe.models.responses.BaseOutput;
 import lombok.extern.slf4j.Slf4j;
@@ -50,12 +50,12 @@ public class CustomExceptionHandler {
   public ResponseEntity<Object> handleAuthenticationException(AuthenticationException e) {
     log.error("ERROR AuthenticationException: {}", e.getMessage(), e);
     return new ResponseEntity<>(
-        BaseOutput.builder().errors(List.of(DsdConstant.ERROR.AUTH.fAILED)).status(ResponseStatus.FAILED).build(),
+        BaseOutput.builder().errors(List.of(TkpConstant.ERROR.AUTH.fAILED)).status(ResponseStatus.FAILED).build(),
         HttpStatus.UNAUTHORIZED);
   }
 
-  @ExceptionHandler(value = DsdCommonException.class)
-  public ResponseEntity<Object> handleDsdFileException(DsdCommonException e) {
+  @ExceptionHandler(value = TkpCommonException.class)
+  public ResponseEntity<Object> handleDsdFileException(TkpCommonException e) {
     log.error("ERROR DsdCommonException: {}", e.getMessage(), e);
     return new ResponseEntity<>(
         BaseOutput.builder().errors(List.of(e.getMessage())).status(ResponseStatus.FAILED).build(),
@@ -66,7 +66,7 @@ public class CustomExceptionHandler {
   public ResponseEntity<Object> handleDsdFileException(Exception e) {
     log.error("ERROR Exception: {}", e.getMessage(), e);
     return new ResponseEntity<>(
-        BaseOutput.builder().errors(List.of(DsdConstant.ERROR.SERVER.INTERNAL)).status(ResponseStatus.FAILED).build(),
+        BaseOutput.builder().errors(List.of(TkpConstant.ERROR.SERVER.INTERNAL)).status(ResponseStatus.FAILED).build(),
         HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
@@ -74,7 +74,7 @@ public class CustomExceptionHandler {
   public ResponseEntity<Object> handleDsdFileException(ServerException e) {
     log.error("ERROR Exception: {}", e.getMessage(), e);
     return new ResponseEntity<>(
-        BaseOutput.builder().errors(List.of(DsdConstant.ERROR.SERVER.INTERNAL)).status(ResponseStatus.FAILED).build(),
+        BaseOutput.builder().errors(List.of(TkpConstant.ERROR.SERVER.INTERNAL)).status(ResponseStatus.FAILED).build(),
         HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

@@ -1,6 +1,6 @@
 package com.dev.tkpbe.models.dtos;
 
-import com.dev.tkpbe.commons.enums.Status;
+import com.dev.tkpbe.commons.enums.TimeStatus;
 import com.dev.tkpbe.commons.enums.TimeType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -28,7 +28,7 @@ public class Time {
 
     Date time;
 
-    Status status;
+    TimeStatus status;
 
     User user;
 

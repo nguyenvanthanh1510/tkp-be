@@ -4,7 +4,7 @@ package com.dev.tkpbe.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,7 +34,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
       return new User(loggInUser.getEmail(), loggInUser.getPassword(), authorities);
     } else {
-      throw new UsernameNotFoundException(DsdConstant.ERROR.AUTH.NOT_FOUND);
+      throw new UsernameNotFoundException(TkpConstant.ERROR.AUTH.NOT_FOUND);
     }
   }
 }

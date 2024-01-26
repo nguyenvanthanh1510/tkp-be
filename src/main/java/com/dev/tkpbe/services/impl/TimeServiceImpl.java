@@ -1,22 +1,19 @@
 package com.dev.tkpbe.services.impl;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
-import com.dev.tkpbe.commons.enums.Status;
+import com.dev.tkpbe.commons.constants.TkpConstant;
+import com.dev.tkpbe.commons.enums.TimeStatus;
 import com.dev.tkpbe.commons.enums.TimeType;
 import com.dev.tkpbe.components.TimeMapper;
-import com.dev.tkpbe.configs.exceptions.DsdCommonException;
+import com.dev.tkpbe.configs.exceptions.TkpCommonException;
 import com.dev.tkpbe.models.dtos.Time;
-import com.dev.tkpbe.models.dtos.User;
 import com.dev.tkpbe.models.entities.TimeEntity;
 import com.dev.tkpbe.models.entities.UserEntity;
 import com.dev.tkpbe.repositories.TimeRepository;
 import com.dev.tkpbe.repositories.UserRepository;
 import com.dev.tkpbe.services.TimeService;
 import com.dev.tkpbe.services.UserService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,8 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -61,7 +56,7 @@ public class TimeServiceImpl implements TimeService {
     @Override
     public Time create(Time time){
         if (time == null) {
-            throw new DsdCommonException(DsdConstant.ERROR.USER.EXIST);
+            throw new TkpCommonException(TkpConstant.ERROR.USER.EXIST);
         }
         Date currentTime = new Date();
         String selectTime = time.getTime().toString();
@@ -91,7 +86,7 @@ public class TimeServiceImpl implements TimeService {
     @Override
     public void delete( Long id){
         if (!timeRepository.existsById(id)) {
-            throw new DsdCommonException(DsdConstant.ERROR.USER.NOT_EXIST);
+            throw new TkpCommonException(TkpConstant.ERROR.USER.NOT_EXIST);
         }
         timeRepository.deleteById(id);
     }
@@ -107,16 +102,16 @@ public class TimeServiceImpl implements TimeService {
         boolean hasCheckedInToday = timeRepository.existsByUserAndTypeAndTimeBetween(user, TimeType.CHECK_IN, startOfDay, endOfDay);
 
         if (hasCheckedInToday) {
-            throw new DsdCommonException(DsdConstant.ERROR.TIME.CHECK_IN);
+            throw new TkpCommonException(TkpConstant.ERROR.TIME.CHECK_IN);
         }
         userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour <= 9) {
-            timeEntity.setStatus(Status.TIMELY);
+            timeEntity.setStatus(TimeStatus.TIMELY);
         } else {
-            timeEntity.setStatus(Status.LATE);
+            timeEntity.setStatus(TimeStatus.LATE);
         }
         return Optional.of(timeEntity)
                 .map(t -> t.setType(TimeType.CHECK_IN))
@@ -138,22 +133,22 @@ public class TimeServiceImpl implements TimeService {
         boolean hasCheckedInToday = timeRepository.existsByUserAndTypeAndTimeBetween(user, TimeType.CHECK_IN, startOfDay, endOfDay);
 
         if (!hasCheckedInToday) {
-            throw new DsdCommonException(DsdConstant.ERROR.TIME.NOT_CHECK_IN);
+            throw new TkpCommonException(TkpConstant.ERROR.TIME.NOT_CHECK_IN);
         }
 
         boolean hasCheckedOutToday = timeRepository.existsByUserAndTypeAndTimeBetween(user, TimeType.CHECK_OUT, startOfDay, endOfDay);
 
         if (hasCheckedOutToday) {
-            throw new DsdCommonException(DsdConstant.ERROR.TIME.CHECK_OUT);
+            throw new TkpCommonException(TkpConstant.ERROR.TIME.CHECK_OUT);
         }
         userRepository.findByEmail(userEmail).ifPresent(timeEntity::setUser);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour >= 18) {
-            timeEntity.setStatus(Status.TIMELY);
+            timeEntity.setStatus(TimeStatus.TIMELY);
         } else {
-            timeEntity.setStatus(Status.EARLY);
+            timeEntity.setStatus(TimeStatus.EARLY);
         }
         return Optional.of(timeEntity)
                 .map(t -> t.setType(TimeType.CHECK_OUT))
