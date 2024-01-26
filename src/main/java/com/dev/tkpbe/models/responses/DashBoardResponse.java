@@ -15,4 +15,5 @@ import lombok.extern.jackson.Jacksonized;
 public class DashBoardResponse {
     Long totalGoLate;
     Long totalArriveEarly;
+    Long totalDayOff;
 }

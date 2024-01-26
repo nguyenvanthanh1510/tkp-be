@@ -19,4 +19,8 @@ public interface TimeRepository extends JpaRepository<TimeEntity,Long> {
             "SELECT count(t) FROM TimeEntity t "
                     + "WHERE (t.user.id = :userId) AND t.type = :type AND t.status= :status")
     Long countTime(@Param("type") TimeType type, @Param("status") TimeStatus status, @Param("userId") Long userId);
+
+    @Query("SELECT COUNT(t) FROM TimeEntity t WHERE MONTH(t.time) = MONTH(CURRENT_DATE()) AND YEAR(t.time) = YEAR(CURRENT_DATE()) ")
+    Long countRecordsByCurrentMonthAndYear();
+
 }

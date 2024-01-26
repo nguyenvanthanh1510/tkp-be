@@ -14,6 +14,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -33,11 +37,24 @@ public class DashBoardServiceImpl implements DashBoardService {
                         .orElse(null);
         Long userId = loggedUser.getId();
 
+        LocalDate currentDate = LocalDate.now();
+        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
+        Long totalDay = 0L;
+        for (LocalDate date = firstDayOfMonth; !date.isAfter(currentDate); date = date.plusDays(1)) {
+            if (date.getDayOfWeek() != DayOfWeek.SATURDAY && date.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                totalDay++;
+            }
+        }
+
         Long totalGoLate = timeRepository.countTime(TimeType.CHECK_IN, TimeStatus.LATE,userId);
         Long totalEarly = timeRepository.countTime(TimeType.CHECK_OUT,TimeStatus.EARLY,userId);
+        Long countRecordsByCurrentMonthAndYear= timeRepository.countRecordsByCurrentMonthAndYear();
+        Long totalDayOff= totalDay-countRecordsByCurrentMonthAndYear;
         DashBoardResponse dashBoardResponse = DashBoardResponse.builder()
                 .totalGoLate(totalGoLate)
                 .totalArriveEarly(totalEarly)
+                .totalDayOff(totalDayOff)
+
                 .build();
 
         return dashBoardResponse;
