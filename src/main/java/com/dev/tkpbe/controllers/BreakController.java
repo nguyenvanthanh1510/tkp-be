@@ -1,13 +1,12 @@
 package com.dev.tkpbe.controllers;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
-import com.dev.tkpbe.components.BreakMapper;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.models.dtos.Break;
-import com.dev.tkpbe.models.dtos.Time;
 import com.dev.tkpbe.models.responses.BaseOutput;
 import com.dev.tkpbe.services.BreakService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/break")
 public class BreakController {
-    private final BreakService breakService;
+    @Lazy private final BreakService breakService;
 
     @GetMapping("")
     public ResponseEntity<BaseOutput<List<Break>>> getAllByPaging(
@@ -45,7 +44,7 @@ public class BreakController {
         if (id == null) {
             BaseOutput<Break> response =
                     BaseOutput.<Break>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
                             .build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -63,7 +62,7 @@ public class BreakController {
         if(breaks == null){
             BaseOutput<Break> response =
                     BaseOutput.<Break>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_BODY))
                             .build();
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -81,7 +80,7 @@ public class BreakController {
         if(id == null){
             BaseOutput<Break> response =
                     BaseOutput.<Break>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
                             .build();
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -100,7 +99,7 @@ public class BreakController {
         if (id <= 0) {
             BaseOutput<String> response =
                     BaseOutput.<String>builder()
-                            .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
                             .build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -109,5 +108,23 @@ public class BreakController {
                 BaseOutput.<String>builder()
                         .data(HttpStatus.OK.toString())
                         .build());
+    }
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<BaseOutput<Break>> updateStatus(@PathVariable("id") Long id){
+        if(id == null){
+            BaseOutput<Break> response =
+                    BaseOutput.<Break>builder()
+                            .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID))
+                            .build();
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        Break updateId = breakService.updateStatus(id);
+        BaseOutput<Break> response =
+                BaseOutput.<Break>builder()
+                        .message(HttpStatus.OK.toString())
+                        .data(updateId)
+                        .build();
+        return ResponseEntity.ok(response);
     }
 }

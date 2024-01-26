@@ -39,4 +39,6 @@ public class User {
   List<Role> roles;
 
   List<Time> times;
+
+  List<Break> breaks;
 }

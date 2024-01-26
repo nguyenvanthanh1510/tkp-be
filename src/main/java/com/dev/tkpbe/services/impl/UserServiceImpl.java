@@ -3,9 +3,9 @@ package com.dev.tkpbe.services.impl;
 import java.util.List;
 import java.util.Optional;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.components.UserMapper;
-import com.dev.tkpbe.configs.exceptions.DsdCommonException;
+import com.dev.tkpbe.configs.exceptions.TkpCommonException;
 import com.dev.tkpbe.models.dtos.User;
 import com.dev.tkpbe.models.entities.UserEntity;
 import com.dev.tkpbe.models.entities.UserRoleMapEntity;
@@ -56,10 +56,10 @@ public class UserServiceImpl implements UserService {
         log.info("LOGGED user: {}", loggedEmail);
         return loggedEmail;
       } else {
-        throw new UsernameNotFoundException(DsdConstant.ERROR.AUTH.NOT_FOUND);
+        throw new UsernameNotFoundException(TkpConstant.ERROR.AUTH.NOT_FOUND);
       }
     }
-    throw new UsernameNotFoundException(DsdConstant.ERROR.AUTH.NOT_FOUND);
+    throw new UsernameNotFoundException(TkpConstant.ERROR.AUTH.NOT_FOUND);
   }
 
   @Override
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     if (user == null
         || userRepository.existsByEmail(user.getEmail())
         || userRepository.existsByUserName(user.getUserName())) {
-      throw new DsdCommonException(DsdConstant.ERROR.USER.EXIST);
+      throw new TkpCommonException(TkpConstant.ERROR.USER.EXIST);
     }
     return Optional.of(user)
         .map(userMapper::toEntity)
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
 
     if (!userRepository.existsById(toUpdateUser.getId())) {
-      throw new DsdCommonException(DsdConstant.ERROR.USER.NOT_EXIST);
+      throw new TkpCommonException(TkpConstant.ERROR.USER.NOT_EXIST);
     }
     return Optional.of(toUpdateUser)
         .flatMap(u -> userRepository.findById(u.getId()))
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
   public void delete(@NonNull Long id) {
 
     if (!userRepository.existsById(id)) {
-      throw new DsdCommonException(DsdConstant.ERROR.USER.NOT_EXIST);
+      throw new TkpCommonException(TkpConstant.ERROR.USER.NOT_EXIST);
     }
 
     userRepository.deleteById(id);

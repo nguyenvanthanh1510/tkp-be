@@ -47,4 +47,7 @@ public class UserEntity extends CommonEntity implements Serializable {
   @OneToMany(mappedBy = "user")
   List<TimeEntity> times;
 
+  @OneToMany(mappedBy = "user")
+  List<BreakEntity> breaks;
+
 }

@@ -20,7 +20,7 @@ public class BreakMapper {
                         e ->
                                 BreakEntity.builder()
                                         .id(e.getId())
-                                        .breaktype(e.getBreaktype())
+                                        .type(e.getType())
                                         .day(e.getDay())
                                         .content(e.getContent())
                                         .build())
@@ -33,7 +33,7 @@ public class BreakMapper {
                                 Break.builder()
                                         .id(e.getId())
                                         .day(e.getDay())
-                                        .breaktype(e.getBreaktype())
+                                        .type(e.getType())
                                         .content(e.getContent())
                                         .build())
                 .orElse(null);

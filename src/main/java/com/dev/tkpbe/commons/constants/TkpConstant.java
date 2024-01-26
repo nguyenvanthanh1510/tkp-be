@@ -1,6 +1,6 @@
 package com.dev.tkpbe.commons.constants;
 
-public class DsdConstant {
+public class TkpConstant {
 
   public static class ERROR {
 

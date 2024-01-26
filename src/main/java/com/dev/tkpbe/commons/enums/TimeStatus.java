@@ -9,18 +9,18 @@ import java.util.stream.Stream;
 @Schema(enumAsRef = true)
 @RequiredArgsConstructor
 @Getter
-public enum Status {
+public enum TimeStatus {
     LATE("GO_LATE"),
     TIMELY("TIMELY"),
     EARLY("ARRIVE_EARLY");
 
     private final String value;
 
-    public static Status parse(final String status) {
-        return Stream.of(Status.values())
+    public static TimeStatus parse(final String status) {
+        return Stream.of(TimeStatus.values())
                 .filter(e -> e.value.equals(status))
                 .findFirst()
-                .orElse(Status.TIMELY);
+                .orElse(TimeStatus.TIMELY);
     }
 
 //    public boolean isCheckIn() {

@@ -1,18 +1,13 @@
 package com.dev.tkpbe.controllers;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.models.dtos.Role;
 import com.dev.tkpbe.models.responses.BaseOutput;
 import com.dev.tkpbe.services.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +60,7 @@ public class RoleController {
     if (id <= 0) {
       BaseOutput<Role> response =
           BaseOutput.<Role>builder()
-              .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+              .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -87,7 +82,7 @@ public class RoleController {
     if (role == null) {
       BaseOutput<Role> response =
           BaseOutput.<Role>builder()
-              .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_BODY))
+              .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_BODY))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -108,7 +103,7 @@ public class RoleController {
     if (id <= 0) {
       BaseOutput<Role> response =
           BaseOutput.<Role>builder()
-              .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+              .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -128,7 +123,7 @@ public class RoleController {
     if (id <= 0) {
       BaseOutput<String> response =
           BaseOutput.<String>builder()
-              .errors(List.of(DsdConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
+              .errors(List.of(TkpConstant.ERROR.REQUEST.INVALID_PATH_VARIABLE))
               .build();
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }

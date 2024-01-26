@@ -6,11 +6,13 @@ import org.springframework.data.domain.Page;
 
 public interface BreakService {
 
-    public Page<Break> getByPaging(
+    Page<Break> getByPaging(
             int pageNo, int pageSize, String sortBy, String sortDirection);
     Break getById(Long id);
     Break create(Break breaks);
     Break update(Break breaks);
 
     void delete(@NonNull Long id);
+
+    Break updateStatus(Long id);
 }

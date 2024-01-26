@@ -1,9 +1,9 @@
 package com.dev.tkpbe.services.impl;
 
-import com.dev.tkpbe.commons.constants.DsdConstant;
+import com.dev.tkpbe.commons.constants.TkpConstant;
 import com.dev.tkpbe.commons.enums.RoleType;
 import com.dev.tkpbe.components.RoleMapper;
-import com.dev.tkpbe.configs.exceptions.DsdCommonException;
+import com.dev.tkpbe.configs.exceptions.TkpCommonException;
 import com.dev.tkpbe.models.dtos.Role;
 import com.dev.tkpbe.models.entities.RoleEntity;
 import com.dev.tkpbe.repositories.RoleRepository;
@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public Role create(Role role) {
     if (role == null || roleRepository.existsByType(role.getType())) {
-      throw new DsdCommonException(DsdConstant.ERROR.ROLE.EXIST);
+      throw new TkpCommonException(TkpConstant.ERROR.ROLE.EXIST);
     }
     return Optional.ofNullable(role)
         .map(e -> roleMapper.toEntity(e))
@@ -55,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
   public Role update(Role role) {
     RoleEntity oldRoleEntity = roleRepository.findById(role.getId()).orElse(null);
     if (oldRoleEntity == null) {
-      throw new DsdCommonException(DsdConstant.ERROR.ROLE.NOT_EXIST);
+      throw new TkpCommonException(TkpConstant.ERROR.ROLE.NOT_EXIST);
     }
     return Optional.ofNullable(oldRoleEntity)
         .map(op -> op.toBuilder().name(role.getName()).build())

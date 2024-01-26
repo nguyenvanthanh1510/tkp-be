@@ -1,6 +1,6 @@
 package com.dev.tkpbe.models.entities;
 
-import com.dev.tkpbe.commons.enums.Status;
+import com.dev.tkpbe.commons.enums.TimeStatus;
 import com.dev.tkpbe.commons.enums.TimeType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,7 +37,7 @@ public class TimeEntity extends CommonEntity implements Serializable {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    Status status;
+    TimeStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))

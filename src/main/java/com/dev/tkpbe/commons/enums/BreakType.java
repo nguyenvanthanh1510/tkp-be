@@ -14,6 +14,7 @@ public enum BreakType {
     XIN_VE_SOM("XIN_VE_SOM"),
     XIN_NGHI("XIN_NGHI"),
     UNDEFINED("UNDEFINED");
+
     private final String value;
 
     public static BreakType parse(final  String role){

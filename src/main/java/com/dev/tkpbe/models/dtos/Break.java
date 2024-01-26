@@ -1,5 +1,6 @@
 package com.dev.tkpbe.models.dtos;
 
+import com.dev.tkpbe.commons.enums.BreakStatus;
 import com.dev.tkpbe.commons.enums.BreakType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -24,7 +25,11 @@ public class Break {
 
     Date day;
 
-    BreakType breaktype;
+    BreakType type;
 
     String content;
+
+    BreakStatus status;
+
+    User user;
 }
