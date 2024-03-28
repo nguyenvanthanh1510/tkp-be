@@ -25,4 +25,6 @@ public class Role {
   String name;
 
   RoleType type;
+
+  //test
 }
