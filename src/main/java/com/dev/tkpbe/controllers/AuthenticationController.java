@@ -49,4 +49,25 @@ public class AuthenticationController {
 
     return ResponseEntity.ok(response);
   }
+  
+  @PostMapping("/login")
+  public ResponseEntity<BaseOutput<String>> loginTest(@RequestBody AuthRequest request) {
+    try {
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+    } catch (BadCredentialsException e) {
+      throw new JwtAuthenticationException("error.auth.invalid.credentials");
+    }
+
+    UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+    String jwt = jwtUtil.generateToken(userDetails);
+
+    BaseOutput<String> response =
+        BaseOutput.<String>builder()
+            .message(HttpStatus.OK.toString())
+            .data(jwt)
+            .build();
+
+    return ResponseEntity.ok(response);
+  }
 }
